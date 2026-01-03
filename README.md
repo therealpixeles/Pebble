@@ -6,9 +6,6 @@ It focuses on:
 - clarity over abstraction
 - game logic living in `main.c`
 - minimal helpers instead of large systems
-- no ECS, no scripting, no magic
-
-Pebble is meant to feel like *writing a game*, not wiring an engine.
 
 ---
 
