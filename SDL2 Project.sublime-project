@@ -1,0 +1,31 @@
+{
+	"folders":
+	[
+		{
+			"path": "bin/.."
+		}
+	],
+	"build_systems":
+	[
+		{
+			"name": "Debug",
+			"working_dir": "${project_path}",
+			"cmd":
+			[
+				"gcc -c src/*.c -std=c11 -m64 -g -Wall -Wextra -Iinclude -I/usr/include/SDL2 && gcc *.o -o bin/debug/main -lSDL2 -lSDL2_image -lSDL2_ttf && ./bin/debug/main"
+			],
+			"selector": "source.c",
+			"shell": true
+		},
+		{
+			"name": "Release",
+			"working_dir": "${project_path}",
+			"cmd":
+			[
+				"gcc -c src/*.c -std=c11 -m64 -O3 -Wall -Wextra -Iinclude -I/usr/include/SDL2 && gcc *.o -o bin/release/main -s -lSDL2 -lSDL2_image -lSDL2_ttf && ./bin/release/main"
+			],
+			"selector": "source.c",
+			"shell": true
+		}
+	]
+}
