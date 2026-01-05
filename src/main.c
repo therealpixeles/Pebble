@@ -1,7 +1,6 @@
+#define SDL_MAIN_HANDLED
 #include <stdio.h>
 #include "Global.h"
-
-#include "Entity.h"
 
 int main(void)
 {

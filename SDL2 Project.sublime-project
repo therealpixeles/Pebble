@@ -2,30 +2,55 @@
 	"folders":
 	[
 		{
-			"path": "bin/.."
+			"path": ".",
+			"file_exclude_patterns": ["*.sublime-project"]
 		}
 	],
+
 	"build_systems":
 	[
+		/* =======================
+		   LINUX DEBUG
+		======================= */
 		{
-			"name": "Debug",
+			"name": "Linux Debug",
 			"working_dir": "${project_path}",
-			"cmd":
-			[
-				"gcc -c src/*.c -std=c11 -m64 -g -Wall -Wextra -Iinclude -I/usr/include/SDL2 && gcc *.o -o bin/debug/main -lSDL2 -lSDL2_image -lSDL2_ttf && ./bin/debug/main"
-			],
-			"selector": "source.c",
-			"shell": true
+			"shell": true,
+			"cmd": "mkdir -p bin/debug/obj && rm -f bin/debug/obj/*.o && gcc -std=c17 -g -O0 -DDEBUG -Wall -Wextra -Wpedantic -I include -I include/engine $(sdl2-config --cflags) -c src/*.c src/engine/*.c && mv *.o bin/debug/obj && gcc bin/debug/obj/*.o -o bin/debug/main $(sdl2-config --libs) -lSDL2_image && cp -r res bin/debug/ && ./bin/debug/main",
+			"selector": "source.c"
 		},
+
+		/* =======================
+		   LINUX RELEASE
+		======================= */
 		{
-			"name": "Release",
+			"name": "Linux Release",
 			"working_dir": "${project_path}",
-			"cmd":
-			[
-				"gcc -c src/*.c -std=c11 -m64 -O3 -Wall -Wextra -Iinclude -I/usr/include/SDL2 && gcc *.o -o bin/release/main -s -lSDL2 -lSDL2_image -lSDL2_ttf && ./bin/release/main"
-			],
-			"selector": "source.c",
-			"shell": true
+			"shell": true,
+			"cmd": "mkdir -p bin/release/obj && rm -f bin/release/obj/*.o && gcc -std=c17 -O2 -DNDEBUG -Wall -Wextra -Wpedantic -I include -I include/engine $(sdl2-config --cflags) -c src/*.c src/engine/*.c && mv *.o bin/release/obj && gcc bin/release/obj/*.o -o bin/release/main $(sdl2-config --libs) -lSDL2_image && cp -r res bin/release/ && ./bin/release/main",
+			"selector": "source.c"
+		},
+
+		/* =======================
+		   WINDOWS DEBUG
+		======================= */
+		{
+			"name": "Windows Debug",
+			"working_dir": "${project_path}",
+			"shell": true,
+			"cmd": "mkdir -p bin/debug/obj bin/debug && rm -f bin/debug/obj/*.o && x86_64-w64-mingw32-gcc -std=c17 -g -O0 -DDEBUG -Wall -m64 -I include -I include/engine -I deps/SDL2/include/SDL2 -I deps/SDL2_image/include/SDL2 -c src/*.c src/engine/*.c && mv *.o bin/debug/obj && x86_64-w64-mingw32-gcc bin/debug/obj/*.o -o bin/debug/main.exe -L deps/SDL2/lib -L deps/SDL2_image/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image && mkdir -p bin/debug && cp bin/dll/*.dll bin/debug || true && cp -r res bin/debug/ && ./bin/debug/main.exe",
+			"selector": "source.c"
+		},
+
+		/* =======================
+		   WINDOWS RELEASE
+		======================= */
+		{
+			"name": "Windows Release",
+			"working_dir": "${project_path}",
+			"shell": true,
+			"cmd": "mkdir -p bin/release/obj bin/release && rm -f bin/release/obj/*.o && x86_64-w64-mingw32-gcc -std=c17 -O2 -DNDEBUG -Wall -m64 -I include -I include/engine -I deps/SDL2/include/SDL2 -I deps/SDL2_image/include/SDL2 -c src/*.c src/engine/*.c && mv *.o bin/release/obj && x86_64-w64-mingw32-gcc bin/release/obj/*.o -o bin/release/main.exe -L deps/SDL2/lib -L deps/SDL2_image/lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image && mkdir -p bin/release && cp bin/dll/*.dll bin/release || true && cp -r res bin/release/ && ./bin/release/main.exe",
+			"selector": "source.c"
 		}
 	]
 }
